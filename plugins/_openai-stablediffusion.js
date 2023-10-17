@@ -11,7 +11,7 @@ let handler = async (m, { text, conn, usedPrefix, command }) => {
   writeFileSync(saveFilename, buffer);
   conn.sendFile(m.chat, saveFilename, null, `*Result For:* _${prompt}_`, m);
 };
-handler.command = handler.help = ['diffusion', 'stablediffusion', 'diff'];
+handler.command = handler.help = ['diffusion', 'stablediffusion', 'imagine'];
 handler.tags = ['tools'];
 handler.limit = true;
 handler.private = false;
