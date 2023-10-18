@@ -14,7 +14,7 @@ module.exports = {
         if (chatUpdate.messages.length > 1) console.log(chatUpdate.messages)
         let m = chatUpdate.messages[chatUpdate.messages.length - 1]
         if (!m) return
-        console.log(JSON.stringify(m, null, 4))
+        //console.log(JSON.stringify(m, null, 4))
         try {
             m = simple.smsg(this, m) || m
             if (!m) return
@@ -244,7 +244,7 @@ module.exports = {
                         
         }
                     if (!isNumber(user.level)) user.level = 0
-                    if (!user.job) user.job = 'Pengangguran'
+                    if (!user.job) user.job = '👀'
                     if (!user.lbars) user.lbars = '[▒▒▒▒▒▒▒▒▒]'
                     if (!user.premium) user.premium = false
                     if (!user.premium) user.premiumTime= 0
@@ -264,7 +264,7 @@ module.exports = {
                     exp: 0,
                     coin: 0,
                     atm: 0,
-                    limit: 100,
+                    limit: 500,
                     tigame: 999,
                     lastclaim: 0,
                     money: 0,
@@ -402,7 +402,7 @@ module.exports = {
                     regTime: -1,
                     premium: false, 
                     premiumTime: 0,
-                    job: 'Noob', 
+                    job: 'Pengangguran', 
                     lbars: '[▒▒▒▒▒▒▒▒▒]', 
                     role: 'Newbie ㋡', 
                     registered: false,
@@ -417,9 +417,9 @@ module.exports = {
                 if (chat) {
                     if (!('isBanned' in chat)) chat.isBanned = false
                     if (!('welcome' in chat)) chat.welcome = true
-                    if (!('detect' in chat)) chat.detect = true
-                    if (!('sWelcome' in chat)) chat.sWelcome = 'හෙලෝ @user @desc'
-                    if (!('sBye' in chat)) chat.sBye = 'බායි @user'
+                    if (!('detect' in chat)) chat.detect = false
+                    if (!('sWelcome' in chat)) chat.sWelcome = ''
+                    if (!('sBye' in chat)) chat.sBye = ''
                     if (!('sPromote' in chat)) chat.sPromote = ''
                     if (!('sDemote' in chat)) chat.sDemote = ''
                     if (!('delete' in chat)) chat.delete = true
@@ -430,12 +430,12 @@ module.exports = {
                     isBanned: false,
                     welcome: true,
                     detect: false,
-                    sWelcome: 'හෙලෝ @user @desc',
-                    sBye: 'බායි @user',
+                    sWelcome: '',
+                    sBye: '',
                     sPromote: '',
                     sDemote: '',
                     delete: true,
-                    antiLink: true,
+                    antiLink: false,
                     viewonce: false,
                     antiToxic: true,
                 }
@@ -586,14 +586,14 @@ module.exports = {
                     }
                     m.isCommand = true
                     let xp = 'exp' in plugin ? parseInt(plugin.exp) : 17 // XP Earning per command
-                    if (xp > 200) m.reply('-_-') // Hehehe
+                    if (xp > 200) m.reply('Ngecit -_-') // Hehehe
                     else m.exp += xp
                     if (!isPrems && plugin.limit && global.db.data.users[m.sender].limit < plugin.limit * 1) {
-                        this.reply(m.chat, `ඔබේ සීමාව අවසන් *${usedPrefix}buy*`, m)
+                        this.reply(m.chat, `ඔබගේ සීමාව අවසන් වී ඇත, කරුණාකර හරහා මිලදී ගන්න*${usedPrefix}buy*`, m)
                         continue // Limit habis
                     }
                     if (plugin.level > _user.level) {
-                        this.reply(m.chat, `diperlukan level ${plugin.level} untuk menggunakan perintah ini. Level kamu ${_user.level}`, m)
+                        this.reply(m.chat, `මෙම විධානය භාවිතා කිරීමට ${plugin.level} මට්ටම අවශ්‍ය වේ. ඔබේ මට්ටම ${_user.level}`, m)
                         continue // If the level has not been reached
                     }
                     let extra = {
@@ -631,7 +631,7 @@ module.exports = {
                             for (let jid of owner.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').filter(v => v != this.user.jid)) {
                                 let data = (await this.onWhatsApp(jid))[0] || {}
                                 if (data.exists)
-                                    m.reply(`*🚥Plugin:* ${m.plugin}\n*🙎‍♂️Sender:* @${m.sender.split`@`[0]}\n*✉️Chat:* ${m.chat}\n*📞Chat Name:* ${await this.getName(m.chat)}\n*🤖Command:* ${usedPrefix}${command} ${args.join(' ')}\n\n\`\`\`${text}\`\`\``.trim(), data.jid, { mentions: [m.sender] })
+                                    m.reply(`*Plugin:* ${m.plugin}\n*Sender:* @${m.sender.split`@`[0]}\n*Chat:* ${m.chat}\n*Chat Name:* ${await this.getName(m.chat)}\n*Command:* ${usedPrefix}${command} ${args.join(' ')}\n\n\`\`\`${text}\`\`\``.trim(), data.jid, { mentions: [m.sender] })
                             }
                             m.reply(text)
                         }
@@ -644,7 +644,7 @@ module.exports = {
                                 console.error(e)
                             }
                         }
-                        if (m.limit) m.reply(+ m.limit + '🐋')
+                        if (m.limit) m.reply(+ m.limit + '❤️')
                    }
                     break
                 }
@@ -690,49 +690,47 @@ module.exports = {
              } catch (e) {
                  console.log(m, m.quoted, e)
              }
-            if (opts['autoread']) await this.readMessages([m.key]) //this.chatRead(m.chat, m.isGroup ? m.sender : undefined, m.id || m.key.id).catch(() => { })
+            if (opts['autoread']) await this.readMessages([m.key])
         }
     },
-     async participantsUpdate({ id, participants, action }) {
+   async participantsUpdate({ id, participants, action }) {
         if (opts['self']) return
         // if (id in conn.chats) return // First login will spam
         if (global.isInit) return
-        let chat = global.db.data.chats[id] || {}
+        let chat = db.data.chats[id] || {}
         let text = ''
         switch (action) {
-            case 'add':
-            case 'remove':
+        case 'add':
+        case 'remove':
+		case 'leave':
+		case 'invite':
+		case 'invite_v4':
                 if (chat.welcome) {
                     let groupMetadata = await this.groupMetadata(id) || (conn.chats[id] || {}).metadata
                     for (let user of participants) {
                         let pp = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9mFzSckd12spppS8gAJ2KB2ER-ccZd4pBbw&usqp=CAU'
                         try {
-                            pp = await this.profilePictureUrl(user, 'image')
+                            pp = await this.profilePictureUrl(user)
                         } catch (e) {
                         } finally {
-                            text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc ? String.fromCharCode(8206).repeat(4001) + groupMetadata.desc : '') :
-                                (chat.sBye || this.bye || conn.bye || 'Bye, @user!')).replace('@user', await this.getName(user))
-                            let wel = API('alpis', '/api/maker/welcome1', {
-                                name: await this.getName(user),
-                                gpname: await this.getName(id),
-                                member: groupMetadata.participants.length, 
-                                pp: pp, 
-                                bg: 'https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg',
-                                apikey: alpiskey
-                            })
-                            let lea = API('alpis', '/api/maker/goodbye1', {
-                                name: await this.getName(user),
-                                gpname: await this.getName(id),
-                                member: groupMetadata.participants.length, 
-                                pp: pp,
-                                bg: 'https://i.ibb.co/8B6Q84n/LTqHsfYS.jpg',
-                                apikey: alpiskey
-                            })
-                             this.sendFile(id, action === 'add' ? wel : lea, 'pp.jpg', text, null, false, { mentions: [user] })
+                            text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc.toString()) :
+                                (chat.sBye || this.bye || conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
+                            this.sendMessage(id, {
+                            text: text,
+                            contextInfo: {
+			    mentionedJid: [user],
+                            externalAdReply: {  
+                            title: action === 'add' ? 'සාදරයෙන් පිළිගනිමු' : 'ආයුබෝවන්',
+                            body: global.wm,
+                            thumbnailUrl: pp,
+                            sourceUrl: 'https://api.botcahx.live',
+                            mediaType: 1,
+                            renderLargerThumbnail: true 
+                            }}}, { quoted: null})
                         }
                     }
                 }
-                break                          
+                break                        
             case 'promote':
                 text = (chat.sPromote || this.spromote || conn.spromote || '@user ```is now Admin```')
             case 'demote':
@@ -753,10 +751,7 @@ module.exports = {
         let msg = JSON.parse(chats[1].messages[id])
         let chat = global.db.data.chats[msg.key.remoteJid] || {}
         if (chat.delete) return
-        await this.reply(msg.key.remoteJid, `
-detected @${participant.split`@`[0]} have deleted messages
-To turn this feature off, type
-*.enable delete*
+        await this.reply(msg.key.remoteJid, `අනාවරණය කරගත් @${participant.split`@`[0]} පණිවිඩයක් මකා ඇත මෙම විශේෂාංගය අක්‍රිය කිරීමට, ටයිප් කරන්න *.මකන්න සක්රිය කරන්න*
 `.trim(), msg, {
             mentions: [participant]
         })
@@ -766,16 +761,16 @@ To turn this feature off, type
 
 global.dfail = (type, m, conn) => {
     let msg = {
-        rowner: 'ඔව්නර් සදහා පමනි!*_',
-        owner: 'ඔව්නර් සදහා පමනි_!',
-        mods: 'Perintah ini hanya dapat digunakan oleh _*Moderator*_ !',
-        premium: 'ප්‍රමියම් මෙම්බර්ශිප් සදහා පමනි*_ !',
-        group: 'සමූහ තුල පමනක් භාවිතා කල හැක! https://chat.whatsapp.com/DNUr9fAAaTq6YW3SFQHX7Q',
-        private: 'Inbox පමනක් භාවිතා කල හැකi!',
-        admin: 'සමූහ පරිපාලක සදහා පමනි',
-        botAdmin: 'බොට් ඇඩ්මින් වරයකු නොවේ!',
-        unreg: 'මෙම විදානය සදහා රෙජිස්ටර් විය යුතුය:\n\n*#daftar නම.වයස*\n\nඋදාහරන: *#daftar Ranil.16*',
-        restrict: 'මෙය බොට් පරිපාලක විසින් ක්‍රියා විරහිත කර ඇත*!'
+        rowner: 'මෙම විධානය භාවිතා කළ හැක්කේ _*OWWNER!1!1!*_ හට පමණි.',
+        owner: 'මෙම විධානය භාවිතා කළ හැක්කේ _*Bot Owner*_ හට පමණි!',
+        mods: 'මෙම විධානය භාවිතා කළ හැක්කේ _*Moderator*_ හට පමණි!',
+        premium: 'මෙම විධානය _*Premium*_ සාමාජිකයින් සඳහා පමණි!',
+        group: 'මෙම විධානය භාවිතා කළ හැක්කේ කණ්ඩායම් වශයෙන් පමණි!',
+        private: 'මෙම විධානය භාවිතා කළ හැක්කේ පුද්ගලික කතාබස් වල පමණි!',
+        admin: 'මෙම විධානය කණ්ඩායම් *පරිපාලකයින්* සඳහා පමණි!',
+        botAdmin: 'මෙම විධානය භාවිතා කිරීමට bot *Admin* කරන්න!',
+        unreg: 'කරුණාකර මෙම විශේෂාංගය භාවිතා කිරීමට ටයිප් කිරීමෙන් ලියාපදිංචි වන්න:\n\n*#register name.age*\n\nඋදාහරණය: *#register Mansur.16*',
+        restrict: 'මෙම විශේෂාංගය *අබල කර ඇත*!'
     }[type]
     if (msg) return m.reply(msg)
 }
